@@ -11,4 +11,5 @@ public class Result {
 	
 	public Geometry geometry;
 	
+	public String status;
 }

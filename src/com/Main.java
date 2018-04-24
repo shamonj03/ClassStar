@@ -32,16 +32,24 @@ public class Main {
 			
 			
 			Results results = GoogleMapParser.parseByName("Ford Hall");
-	
+			Geometry geometry = null;
+			if(results.results[0].geometry != null) {
+				geometry = results.results[0].geometry;
+			}
+			
+			// Example of additional params.
+			results = GoogleMapParser.parseByLocation(geometry.location.lat, geometry.location.lng, "result_type=premise");
+
+			System.out.println(geometry.toString());
+			
 			for(Result result : results.results) {
 				System.out.println("Result(");
 				
 				if(result.address_components != null) {
 					for(AddressComponent comp : result.address_components) {
-						System.out.println(comp.toString());
+				//		System.out.println(comp.toString());
 					}
 				}
-				
 
 				if(result.formatted_address != null) {
 					System.out.println("Formatted Address(" + result.formatted_address.toString() + ")\n");
@@ -53,5 +61,7 @@ public class Main {
 				}
 			}
 			System.out.println(")");
+			
+
 	}
 }
