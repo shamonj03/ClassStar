@@ -11,6 +11,6 @@ public class HaversineHeuristic implements AbstractHeuristic<SphereNode> {
 	}
 
 	double hav(double radians) {
-		return (1 - Math.cos(radians) / 2.0f);
+		return (1 - Math.cos(radians)) / 2.0f;
 	}
 }
