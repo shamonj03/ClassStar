@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import com.world.SphereNode;
 
-public class OSMReader {
+public class OSMParser {
 
-	public ArrayList<SphereNode> read(File file) throws IOException {
+	public static ArrayList<SphereNode> read(File file) throws IOException {
 		if(!file.exists()) {
 			throw new IOException("Cannot locate osm file.");
 		}

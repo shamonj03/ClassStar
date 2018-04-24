@@ -7,7 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.io.OSMReader;
+import com.io.GoogleMapParser;
+import com.io.OSMParser;
 import com.io.google.Result;
 import com.io.google.Results;
 import com.io.google.types.AddressComponent;
@@ -19,10 +20,8 @@ import com.world.SphereNode;
 public class Main {
 		
 	public static void main(String[] args) throws IOException {
-			OSMReader reader = new OSMReader();
-			
 			// Read the nodes from the map into sphere nodes.
-			ArrayList<SphereNode> list = reader.read(new File("./map.osm"));
+			ArrayList<SphereNode> list = OSMParser.read(new File("./map.osm"));
 			
 			// Example of initiating AStar
 			BasicAstarPathFindingAlgorithm<SphereNode> haversine 
@@ -32,10 +31,7 @@ public class Main {
 			System.out.println(haversine.getHeuristic(list.get(0), list.get(1)));
 			
 			
-			Gson gson = new Gson();
-			
-			URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=Ford+Hall+Minneapolis&key=AIzaSyCp3Bo-Z6xLXI-P2IfLxQRGsxiNXmItumE");
-			Results results = gson.fromJson(new InputStreamReader(url.openStream()), Results.class);
+			Results results = GoogleMapParser.parseByName("Ford Hall");
 	
 			for(Result result : results.results) {
 				System.out.println("Result(");
