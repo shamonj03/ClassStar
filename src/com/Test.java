@@ -8,7 +8,7 @@ import com.io.GoogleMapParser;
 import com.io.OSMParser;
 import com.io.google.types.AddressComponent;
 import com.io.google.types.Result;
-import com.io.google.types.Results;
+import com.io.google.types.MapData;
 import com.model.ClassInformation;
 import com.model.SphereNode;
 import com.world.BasicAstarPathFindingAlgorithm;
@@ -36,7 +36,7 @@ public class Test {
 			
 			for(ClassInformation info : controller.classes) {
 				// Example of additional params.
-				Results results = GoogleMapParser.parseByLocation(info.getLocation().getLat(), info.getLocation().getLon(), "result_type=premise");
+				MapData results = GoogleMapParser.parseByLocation(info.getLocation().getLat(), info.getLocation().getLon(), "result_type=premise");
 				
 				for(Result result : results.results) {
 					System.out.println("Result(");

@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.io.GoogleMapParser;
 import com.io.google.types.Result;
-import com.io.google.types.Results;
+import com.io.google.types.MapData;
 import com.model.ClassInformation;
 import com.model.SphereNode;
 
@@ -17,7 +17,7 @@ public class ClassController {
 	public void addClass(String name) throws IOException {
 		ClassInformation classInfo = new ClassInformation(name);
 		
-		Results results = GoogleMapParser.parseByName(name);
+		MapData results = GoogleMapParser.parseByName(name);
 		
 		for(Result result : results.results) {
 			if(result.geometry != null) {
