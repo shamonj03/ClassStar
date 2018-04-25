@@ -16,6 +16,7 @@ public class GoogleMapParser {
 		return getResult("address="+name+"+Minneapolis", params);
 	}
 	
+	// https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
 	public static Results parseByLocation(double lat, double lon, String... params) throws IOException {
 		return getResult("latlng="+lat+","+lon, params);
 	}

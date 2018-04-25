@@ -3,6 +3,6 @@ import java.util.ArrayList;
 
 public interface AbstractPathFindingAlgorithm<T extends Node> {
 
-	public ArrayList<Node> findPath(T start, T end);
+	public ArrayList<T> findPath(T start, T end);
 	
 }

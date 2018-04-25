@@ -10,7 +10,7 @@ public class SphereNode extends Node {
 		
 		// Convert to radians to save some time...
 		latR = Math.toRadians(x);
-		lonR = Math.toRadians(x);
+		lonR = Math.toRadians(y);
 	}
 	
 	public double getLat() {
