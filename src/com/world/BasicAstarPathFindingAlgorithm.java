@@ -1,6 +1,8 @@
 package com.world;
 import java.util.ArrayList;
 
+import com.model.Node;
+
 public class BasicAstarPathFindingAlgorithm<T extends Node> extends AbstractAStarPathFindingAlgorithm<T> {
 
 	public BasicAstarPathFindingAlgorithm(AbstractHeuristic<T> heuristic) {

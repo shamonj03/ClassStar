@@ -1,5 +1,7 @@
 package com.world;
 
+import com.model.SphereNode;
+
 public class HaversineHeuristic implements AbstractHeuristic<SphereNode> {
 
 	@Override

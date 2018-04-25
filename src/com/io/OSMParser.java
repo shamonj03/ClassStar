@@ -4,17 +4,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import com.world.SphereNode;
+import com.model.SphereNode;
 
 public class OSMParser {
 
-	public static ArrayList<SphereNode> read(File file) throws IOException {
+	public static List<SphereNode> read(File file) throws IOException {
 		if(!file.exists()) {
 			throw new IOException("Cannot locate osm file.");
 		}
 		
-		ArrayList<SphereNode> list = new ArrayList<>();
+		List<SphereNode> list = new ArrayList<>();
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String line = "";
@@ -57,6 +59,7 @@ public class OSMParser {
 				}
 			}
 		}
-		return list;
+		// Remove dupes
+		return list.stream().distinct().collect(Collectors.toList());
 	}
 }

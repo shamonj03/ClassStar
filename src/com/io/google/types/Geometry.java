@@ -1,8 +1,6 @@
 package com.io.google.types;
 
-import com.io.google.Result;
-
-public class Geometry extends Result {
+public class Geometry {
 
 	public Location location;
 	public String[] types;

@@ -1,7 +1,4 @@
-package com.io.google;
-
-import com.io.google.types.AddressComponent;
-import com.io.google.types.Geometry;
+package com.io.google.types;
 
 public class Result {
 	

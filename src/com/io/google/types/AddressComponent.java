@@ -1,8 +1,6 @@
 package com.io.google.types;
 
-import com.io.google.Result;
-
-public class AddressComponent extends Result {
+public class AddressComponent {
 
 	public String long_name;
 	public String short_name;

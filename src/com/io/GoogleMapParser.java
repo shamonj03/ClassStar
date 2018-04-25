@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import com.google.gson.Gson;
-import com.io.google.Results;
+import com.io.google.types.Results;
 
 public class GoogleMapParser {
 

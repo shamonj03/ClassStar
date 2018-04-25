@@ -1,4 +1,4 @@
-package com.world;
+package com.model;
 
 public class Node {
 
