@@ -42,7 +42,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 
-		
+		/*
+		 * Init map data.
+		 */
 		graph = gson.fromJson(new FileReader("./graph.json"), Vertex[].class);
 
 		Way[] ways = gson.fromJson(new FileReader("./ways.raw"), Way[].class);
@@ -55,6 +57,10 @@ public class Main {
 			wayMap.put(way.getId(), way);
 		}
 
+		
+		/*
+		 * Find some starting nodes based on name.
+		 */
 		long start = 0;
 		long end = 0;
 		for (Way way : wayMap.values()) {
@@ -68,12 +74,11 @@ public class Main {
 
 		System.out.println("Parent: " + start);
 		long first = wayMap.get(start).getNodes()[0];
-		
 		long second = wayMap.get(end).getNodes()[0];
-		for (long id : wayMap.get(end).getNodes()) {
-			System.out.println(id + " = " + vertexMap.get(id).getId());
-		}
 
+		/*
+		 * Draw the start and end points
+		 */
 		BufferedImage img = drawGraph(graph);
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		
@@ -84,6 +89,9 @@ public class Main {
 		g.fillRect(getXFromLat(vStart.getLat()) - 8, getYFromLon(vStart.getLon()) - 8, 16, 16);
 		g.fillRect(getXFromLat(vEnd.getLat()) - 8, getYFromLon(vEnd.getLon()) - 8, 16, 16);
 		
+		/*
+		 * Find and raw the path.
+		 */
 		AbstractPathFindingAlgorithm pathing = new BasicAstarPathFindingAlgorithm(new HaversineHeuristic());
 		List<Vertex> path = pathing.findPath(vStart, vEnd);
 		
@@ -95,6 +103,9 @@ public class Main {
 			current = v;
 		}
 
+		/*
+		 * Save to file
+		 */
 		g.dispose();
 		ImageIO.write(img, "png", new File("./graph.png"));
 		

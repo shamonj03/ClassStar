@@ -14,11 +14,11 @@ public class AStarNode implements Comparable<AStarNode> {
 	public AStarNode(Vertex vertex) {
 		this.vertex = vertex;
 		this.cameFromId = null;
-		this.gScore = -Integer.MAX_VALUE;
-		this.fScore = -Integer.MAX_VALUE;
+		this.gScore = Integer.MAX_VALUE;
+		this.fScore = Integer.MAX_VALUE;
 	}
 
-	public void setCameFromId(AStarNode cameFromId) {
+	public void setCameFrom(AStarNode cameFromId) {
 		this.cameFromId = cameFromId;
 	}
 

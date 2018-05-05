@@ -22,10 +22,12 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 		AStarNode start = new AStarNode(start_v);
 		
 		start.setfScore(getHeuristic(start_v, end_v));
+		start.setgScore(0);
 		
 		AStarNode end = new AStarNode(end_v);
-		openSet.add(start);
 		AStarNode current = start;
+		
+		openSet.add(start);
 		
 		int steps = 0;
 		while(!openSet.isEmpty()) {
@@ -48,23 +50,27 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 			for(Edge edge : current_v.getEdges()) {
 				Vertex neighbor_v = Main.graph[edge.getIndex()];
 				AStarNode neighbor = new AStarNode(neighbor_v);
-				neighbor.setfScore(getHeuristic(neighbor_v, end_v));
-				neighbor.setCameFromId(current);
 				
 				if(closedSet.contains(neighbor)) {
 					continue;
 				}
 
-				openSet.add(neighbor);
+				if(!openSet.contains(neighbor)) {
+					openSet.add(neighbor);
+				}
 				//System.out.println(neighbor_v.getId());
 				
-				double tentative_gScore =  current.getgScore() + getHeuristic(start_v, neighbor_v);
+				double tentative_gScore =  current.getgScore() + getDistanceFromLatLonInKm(current_v, neighbor_v);
 				
 				if(tentative_gScore >= neighbor.getgScore()) {
 					continue;
 				}
 
-			//	neighbor.setgScore(tentative_gScore);
+				neighbor.setgScore(tentative_gScore);
+				neighbor.setfScore(neighbor.getgScore() + getHeuristic(neighbor_v, end_v));
+				neighbor.setCameFrom(current);
+				
+				openSet.add(neighbor);
 			}
 		}
 		
@@ -76,5 +82,18 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 			path.add(current.getVertex());
 		}
 		return path;
+	}
+	
+	private double getDistanceFromLatLonInKm(Vertex s, Vertex g) {
+	    double R = 6371; // Radius of the earth in km
+	    double dLat = Math.toRadians(g.getLat()-s.getLat());  // deg2rad below
+	    double dLon = Math.toRadians(g.getLon()-s.getLon()); 
+	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	            Math.cos(Math.toRadians(s.getLat())) * Math.cos(Math.toRadians(g.getLat())) * 
+	            Math.sin(dLon/2) * Math.sin(dLon/2)
+	    ; 
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	    double d = R * c; // Distance in km
+	    return d;
 	}
 }
