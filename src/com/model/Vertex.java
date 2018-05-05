@@ -30,6 +30,14 @@ public class Vertex {
 		return lon;
 	}
     
+    public double getX() {
+		return lat;
+	}
+    
+    public double getY() {
+		return lon;
+	}
+    
     public long getId() {
 		return id;
 	}

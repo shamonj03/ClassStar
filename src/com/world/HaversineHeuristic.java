@@ -1,11 +1,12 @@
 package com.world;
 
 import com.model.Node;
+import com.model.Vertex;
 
 public class HaversineHeuristic implements AbstractHeuristic {
 
 	@Override
-	public double heuristic(Node start, Node end) {
+	public double heuristic(Vertex start, Vertex end) {
 		return hav(end.getX() - start.getX())
 				+ Math.cos(start.getX())*Math.cos(end.getX())
 				* hav(end.getY() - start.getY());

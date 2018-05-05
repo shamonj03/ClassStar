@@ -38,8 +38,8 @@ public class Formatter {
 
 		for(Node node : nodes) {
 			for(Vertex vertex : graph) {
-				if(vertex.getLat() == node.getX()
-						&& vertex.getLon() == node.getY()) {
+				if(vertex.getX() == node.getX()
+						&& vertex.getY() == node.getY()) {
 					vertex.setId(node.getId());
 				}
 			}
