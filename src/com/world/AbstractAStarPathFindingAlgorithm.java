@@ -2,16 +2,16 @@ package com.world;
 
 import com.model.Node;
 
-public abstract class AbstractAStarPathFindingAlgorithm<T extends Node> implements AbstractPathFindingAlgorithm<T> {
+public abstract class AbstractAStarPathFindingAlgorithm implements AbstractPathFindingAlgorithm {
 
-	private AbstractHeuristic<T> heuristic;
+	private AbstractHeuristic heuristic;
 	
-	AbstractAStarPathFindingAlgorithm(AbstractHeuristic<T> heuristic) {
+	AbstractAStarPathFindingAlgorithm(AbstractHeuristic heuristic) {
 		this.heuristic = heuristic;
 	}
 	
 	
-	public double getHeuristic(T start, T end) {
+	public double getHeuristic(Node start, Node end) {
 		return heuristic.heuristic(start, end);
 	}
 }

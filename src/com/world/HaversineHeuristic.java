@@ -1,14 +1,14 @@
 package com.world;
 
-import com.model.SphereNode;
+import com.model.Node;
 
-public class HaversineHeuristic implements AbstractHeuristic<SphereNode> {
+public class HaversineHeuristic implements AbstractHeuristic {
 
 	@Override
-	public double heuristic(SphereNode start, SphereNode end) {
-		return hav(end.getLatR() - start.getLatR())
-				+ Math.cos(start.getLatR())*Math.cos(end.getLatR())
-				* hav(end.getLonR() - start.getLonR());
+	public double heuristic(Node start, Node end) {
+		return hav(end.getX() - start.getX())
+				+ Math.cos(start.getX())*Math.cos(end.getX())
+				* hav(end.getY() - start.getY());
 	}
 
 	double hav(double radians) {

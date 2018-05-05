@@ -2,8 +2,8 @@ package com.world;
 
 import com.model.Node;
 
-public interface AbstractHeuristic<T extends Node> {
+public interface AbstractHeuristic {
 
-	public double heuristic(T start, T end);
+	public double heuristic(Node start, Node end);
 	
 }

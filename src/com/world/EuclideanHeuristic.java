@@ -2,7 +2,7 @@ package com.world;
 
 import com.model.Node;
 
-public class EuclideanHeuristic implements AbstractHeuristic<Node> {
+public class EuclideanHeuristic implements AbstractHeuristic {
 
 	@Override
 	public double heuristic(Node start, Node end) {

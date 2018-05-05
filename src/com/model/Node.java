@@ -4,10 +4,16 @@ public class Node {
 
 	protected final double x;
 	protected final double y;
+	protected final long id;
 	
-	public Node(double x, double y) {
+	public Node(long id, double x, double y) {
+		this.id = id;
 		this.x = x;
 		this.y = y;
+	}
+	
+	public long getId() {
+		return id;
 	}
 	
 	public double getX() {

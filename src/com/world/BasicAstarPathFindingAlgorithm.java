@@ -3,14 +3,14 @@ import java.util.ArrayList;
 
 import com.model.Node;
 
-public class BasicAstarPathFindingAlgorithm<T extends Node> extends AbstractAStarPathFindingAlgorithm<T> {
+public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgorithm {
 
-	public BasicAstarPathFindingAlgorithm(AbstractHeuristic<T> heuristic) {
+	public BasicAstarPathFindingAlgorithm(AbstractHeuristic heuristic) {
 		super(heuristic);
 	}
 
 	@Override
-	public ArrayList<T> findPath(T start, T end) {
+	public ArrayList<Node> findPath(Node start, Node end) {
 		return null;
 	}
 
