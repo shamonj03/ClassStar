@@ -19,11 +19,11 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 	public ArrayList<Vertex> findPath(Vertex start_v, Vertex end_v) {
 		List<AStarNode> closedSet = new ArrayList<>();
 		List<AStarNode> openSet = new ArrayList<>();
-		AStarNode start = new AStarNode(start_v.getId());
+		AStarNode start = new AStarNode(start_v);
 		
 		start.setfScore(getHeuristic(start_v, end_v));
 		
-		AStarNode end = new AStarNode(end_v.getId());
+		AStarNode end = new AStarNode(end_v);
 		openSet.add(start);
 		AStarNode current = start;
 		
@@ -32,7 +32,7 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 			Collections.sort(openSet);
 			current = openSet.get(0);
 			
-			if(steps > 5000) {
+			if(steps > 15000) {
 				break;
 			}
 			steps++;
@@ -41,13 +41,13 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 				break;
 			}
 
-			Vertex current_v = Main.vertexMap.get(current.getId());
+			Vertex current_v = current.getVertex();
 			openSet.remove(current);
 			closedSet.add(current);
 			
 			for(Edge edge : current_v.getEdges()) {
 				Vertex neighbor_v = Main.graph[edge.getIndex()];
-				AStarNode neighbor = new AStarNode(neighbor_v.getId());
+				AStarNode neighbor = new AStarNode(neighbor_v);
 				neighbor.setfScore(getHeuristic(neighbor_v, end_v));
 				neighbor.setCameFromId(current);
 				
@@ -56,7 +56,7 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 				}
 
 				openSet.add(neighbor);
-				System.out.println(neighbor_v.getId());
+				//System.out.println(neighbor_v.getId());
 				
 				double tentative_gScore =  current.getgScore() + getHeuristic(start_v, neighbor_v);
 				
@@ -64,33 +64,17 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 					continue;
 				}
 
-				neighbor.setgScore(tentative_gScore);
-				
-				int index = openSet.indexOf(neighbor);
-				openSet.add(neighbor);
+			//	neighbor.setgScore(tentative_gScore);
 			}
 		}
 		
 		ArrayList<Vertex> path = new ArrayList<>();
-		path.add(Main.vertexMap.get(current.getId()));
+		path.add(current.getVertex());
 		
 		while(current.getCameFrom() != null) {
 			current = current.getCameFrom();
-			path.add(Main.vertexMap.get(current.getId()));
+			path.add(current.getVertex());
 		}
 		return path;
-	}
-
-	
-	private double distance(Vertex s, Vertex g) {
-		double dx = Main.getXFromLat(g.getLat()) - Main.getXFromLat(s.getLat());
-		double dy = Main.getYFromLon(g.getLon()) - Main.getYFromLon(s.getLon());
-		return Math.sqrt((dx * dx) + (dy * dy));
-	}
-	
-	private double heuristic2(Vertex s, Vertex g) {
-		double dx = Math.abs(Main.getXFromLat(g.getLat()) - Main.getXFromLat(s.getLat()));
-		double dy = Math.abs(Main.getYFromLon(g.getLon()) - Main.getYFromLon(s.getLon()));
-		return dx + dy;
 	}
 }
