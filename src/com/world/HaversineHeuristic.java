@@ -1,6 +1,5 @@
 package com.world;
 
-import com.model.Node;
 import com.model.Vertex;
 
 public class HaversineHeuristic implements AbstractHeuristic {

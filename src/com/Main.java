@@ -1,13 +1,13 @@
 package com;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -35,21 +35,22 @@ public class Main {
 	public static final float RESOLUTION = SCALE_X / SCALE_Y;
 	
 
+	public static Map<Long, Vertex> vertexMap = new HashMap<>();
+	public static Map<Long, Way> wayMap = new HashMap<>();
+	public static Vertex[] graph;
 	
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 
 		
-		Vertex[] graph = gson.fromJson(new FileReader("./graph.json"), Vertex[].class);
+		graph = gson.fromJson(new FileReader("./graph.json"), Vertex[].class);
 
 		Way[] ways = gson.fromJson(new FileReader("./ways.raw"), Way[].class);
 
-		Map<Long, Vertex> graphMap = new HashMap<>();
 		for (Vertex vertex : graph) {
-			graphMap.put(vertex.getId(), vertex);
+			vertexMap.put(vertex.getId(), vertex);
 		}
 
-		Map<Long, Way> wayMap = new HashMap<>();
 		for (Way way : ways) {
 			wayMap.put(way.getId(), way);
 		}
@@ -57,7 +58,7 @@ public class Main {
 		long start = 0;
 		long end = 0;
 		for (Way way : wayMap.values()) {
-			if (way.getName().equalsIgnoreCase("ford hall")) {
+			if (way.getName().equalsIgnoreCase("Coffman Memorial Union")) {
 				start = way.getId();
 			}
 			if (way.getName().equalsIgnoreCase("robert h. bruininks hall")) {
@@ -70,21 +71,29 @@ public class Main {
 		
 		long second = wayMap.get(end).getNodes()[0];
 		for (long id : wayMap.get(end).getNodes()) {
-			System.out.println(id + " = " + graphMap.get(id).getId());
+			System.out.println(id + " = " + vertexMap.get(id).getId());
 		}
 
 		BufferedImage img = drawGraph(graph);
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		
-		Vertex vStart = graphMap.get(first);
-		Vertex vEnd = graphMap.get(second);
+		Vertex vStart = vertexMap.get(first);
+		Vertex vEnd = vertexMap.get(second);
 		
 		g.setColor(Color.CYAN);
 		g.fillRect(getXFromLat(vStart.getLat()) - 8, getYFromLon(vStart.getLon()) - 8, 16, 16);
 		g.fillRect(getXFromLat(vEnd.getLat()) - 8, getYFromLon(vEnd.getLon()) - 8, 16, 16);
 		
 		AbstractPathFindingAlgorithm pathing = new BasicAstarPathFindingAlgorithm(new HaversineHeuristic());
-		pathing.findPath(vStart, vEnd);
+		List<Vertex> path = pathing.findPath(vStart, vEnd);
+		
+		Vertex current = path.get(0);
+		for(int i = 1; i < path.size(); i++) {
+			Vertex v = path.get(i);
+			System.out.println(v.getLat() + " " + v.getLon());
+			g.drawLine(getXFromLat(current.getLat()), getYFromLon(current.getLon()), getXFromLat(v.getLat()), getYFromLon(v.getLon()));
+			current = v;
+		}
 
 		g.dispose();
 		ImageIO.write(img, "png", new File("./graph.png"));
@@ -101,17 +110,22 @@ public class Main {
 		Graphics2D g = (Graphics2D) img.getGraphics();
 
 
+		g.setColor(Color.GRAY);
 		for (Vertex vertex : graph) {
 			int x = getXFromLat(vertex.getLat());
 			int y = getYFromLon(vertex.getLon());
 
-			g.setColor(Color.GRAY);
 			for(Edge e : vertex.getEdges()) {
 				Vertex vertex2 = graph[e.getIndex()];
 				g.drawLine(x, y, getXFromLat(vertex2.getLat()), getYFromLon(vertex2.getLon()));
 			}
+		}
+
+		g.setColor(Color.RED);
+		for (Vertex vertex : graph) {
+			int x = getXFromLat(vertex.getLat());
+			int y = getYFromLon(vertex.getLon());
 			
-			g.setColor(Color.RED);
 			g.fillRect(x, y, 1, 1);
 			
 		}
@@ -119,11 +133,11 @@ public class Main {
 		return img;
 	}
 	
-	private static int getXFromLat(double lat) {
+	public static int getXFromLat(double lat) {
 		return (int) ((MIN_LAT - lat) * SCALE_X);
 	}
 	
-	private static int getYFromLon(double lon) {
+	public static int getYFromLon(double lon) {
 		return (int) ((MIN_LON - lon) * SCALE_Y);
 	}
 	
