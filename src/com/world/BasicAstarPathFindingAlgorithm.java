@@ -2,8 +2,12 @@ package com.world;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
 
 import com.Main;
 import com.model.Edge;
@@ -17,29 +21,27 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 
 	@Override
 	public ArrayList<Vertex> findPath(Vertex start_v, Vertex end_v) {
-		List<AStarNode> closedSet = new ArrayList<>();
-		List<AStarNode> openSet = new ArrayList<>();
+		Queue<AStarNode> closedSet = new PriorityQueue<>();
+		Queue<AStarNode> openSet = new PriorityQueue<>();
 		AStarNode start = new AStarNode(start_v);
 		
 		start.setfScore(getHeuristic(start_v, end_v));
 		start.setgScore(0);
-		
+
 		AStarNode end = new AStarNode(end_v);
-		AStarNode current = start;
+		AStarNode current = new AStarNode(start_v);
 		
 		openSet.add(start);
 		
-		int steps = 0;
+		int count = 0;
 		while(!openSet.isEmpty()) {
-			Collections.sort(openSet);
-			current = openSet.get(0);
+			current = openSet.poll();
 			
-			if(steps > 15000) {
+			if(count > 50000) {
 				break;
 			}
-			steps++;
 			
-			if(current == end) {
+			if(current.equals(end)) {
 				break;
 			}
 
@@ -50,6 +52,7 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 			for(Edge edge : current_v.getEdges()) {
 				Vertex neighbor_v = Main.graph[edge.getIndex()];
 				AStarNode neighbor = new AStarNode(neighbor_v);
+				count++;
 				
 				if(closedSet.contains(neighbor)) {
 					continue;
@@ -60,7 +63,7 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 				}
 				//System.out.println(neighbor_v.getId());
 				
-				double tentative_gScore =  current.getgScore() + getDistanceFromLatLonInKm(current_v, neighbor_v);
+				double tentative_gScore =  current.getgScore() + getDistance(start_v, neighbor_v);
 				
 				if(tentative_gScore >= neighbor.getgScore()) {
 					continue;
@@ -84,16 +87,15 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 		return path;
 	}
 	
-	private double getDistanceFromLatLonInKm(Vertex s, Vertex g) {
-	    double R = 6371; // Radius of the earth in km
-	    double dLat = Math.toRadians(g.getLat()-s.getLat());  // deg2rad below
-	    double dLon = Math.toRadians(g.getLon()-s.getLon()); 
-	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-	            Math.cos(Math.toRadians(s.getLat())) * Math.cos(Math.toRadians(g.getLat())) * 
-	            Math.sin(dLon/2) * Math.sin(dLon/2)
-	    ; 
-	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-	    double d = R * c; // Distance in km
-	    return d;
+	public double getHeuristic(Vertex s, Vertex g) {
+		double dX = Math.abs(Main.getXFromLat(g.getLat()) - Main.getXFromLat(s.getLat()));
+		double dY = Math.abs(Main.getYFromLon(g.getLon()) - Main.getYFromLon(s.getLon()));
+	    return dX + dY;
+	}
+	
+	private double getDistance(Vertex s, Vertex g) {
+		double dX = Main.getXFromLat(g.getLat()) - Main.getXFromLat(s.getLat());
+		double dY = Main.getYFromLon(g.getLon()) - Main.getYFromLon(s.getLon());
+	    return (dX*dX) + (dY*dY);
 	}
 }

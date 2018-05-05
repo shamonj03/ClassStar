@@ -58,7 +58,12 @@ public class AStarNode implements Comparable<AStarNode> {
 
 	@Override
 	public int compareTo(AStarNode o) {
-		return Double.compare(getfScore(), o.getfScore());
+		if(getfScore() > o.getfScore()) {
+			return 1;
+		} else if(getfScore() < o.getfScore()) {
+			return -1;
+		}
+		return 0;
 	}
 
 }
