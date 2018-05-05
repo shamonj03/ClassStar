@@ -14,17 +14,13 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		Gson gson = new Gson();
 		
-		Vertex[] buildings = gson.fromJson(new FileReader("./buildings.json"), Vertex[].class);
-		Vertex[] roads = gson.fromJson(new FileReader("./roads.json"), Vertex[].class);
+		Vertex[] graph = gson.fromJson(new FileReader("./graph.json"), Vertex[].class);
 		
 		Way[] ways = gson.fromJson(new FileReader("./ways.raw"), Way[].class);
 
-		Map<Long, Vertex> vertexMap = new HashMap<>();
-		for(Vertex vertex : buildings) {
-			vertexMap.put(vertex.getId(), vertex);
-		}
-		for(Vertex vertex : roads) {
-			vertexMap.put(vertex.getId(), vertex);
+		Map<Long, Vertex> graphMap = new HashMap<>();
+		for(Vertex vertex : graph) {
+			graphMap.put(vertex.getId(), vertex);
 		}
 		
 		Map<Long, Way> wayMap = new HashMap<>();
@@ -41,7 +37,7 @@ public class Main {
 		
 		System.out.println("Parent: " + parent);
 		for(long id : wayMap.get(parent).getNodes()) {
-			System.out.println(id + " = " + vertexMap.get(id).getId());
+			System.out.println(id + " = " + graphMap.get(id).getId());
 		}
 	}
 }

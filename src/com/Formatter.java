@@ -26,27 +26,18 @@ public class Formatter {
 
 		Gson gson = new Gson();
 		
-		Vertex[] buildings = gson.fromJson(new FileReader("./buildings.raw"), Vertex[].class);
-		Vertex[] roads = gson.fromJson(new FileReader("./roads.raw"), Vertex[].class);
+		Vertex[] graph = gson.fromJson(new FileReader("./graph.raw"), Vertex[].class);
 		
 
 		Node[] nodes = gson.fromJson(new FileReader("./nodes.raw"), Node[].class);
 		//Way[] ways = gson.fromJson(new FileReader("./ways.raw"), Way[].class);
 		
-		System.out.println(buildings.length);
-		System.out.println(roads.length);
-		
-		Vertex[] vertices = new Vertex[buildings.length + roads.length];
-		
-		System.arraycopy(buildings, 0, vertices, 0, buildings.length);
-		System.arraycopy(roads, 0, vertices, buildings.length, roads.length);
-		
-		System.out.println((buildings.length + roads.length) + "=" + vertices.length);
+		System.out.println(graph.length);
 		
 		
 
 		for(Node node : nodes) {
-			for(Vertex vertex : buildings) {
+			for(Vertex vertex : graph) {
 				if(vertex.getLat() == node.getX()
 						&& vertex.getLon() == node.getY()) {
 					vertex.setId(node.getId());
@@ -57,26 +48,12 @@ public class Formatter {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setPrettyPrinting();
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("buildings.json"))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("graph.json"))) {
 		    gson = builder.create();
-		    gson.toJson(buildings, writer);
+		    gson.toJson(graph, writer);
 		}
-		
 		
 
-		for(Node node : nodes) {
-			for(Vertex vertex : roads) {
-				if(vertex.getLat() == node.getX()
-						&& vertex.getLon() == node.getY()) {
-					vertex.setId(node.getId());
-				}
-			}
-		}
-		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("roads.json"))) {
-		    gson = builder.create();
-		    gson.toJson(roads, writer);
-		}
 	}
 
 	
