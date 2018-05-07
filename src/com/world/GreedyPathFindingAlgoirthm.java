@@ -24,8 +24,6 @@ public class GreedyPathFindingAlgoirthm implements AbstractPathFindingAlgorithm 
 		while(!openSet.isEmpty()) {
 			Vertex current = openSet.get(0);
 			
-			System.out.println("Current: " + current.getId());	
-			path.add(current);
 			
 			
 			if(current.equals(end)) {
@@ -36,7 +34,9 @@ public class GreedyPathFindingAlgoirthm implements AbstractPathFindingAlgorithm 
 				break;
 			}
 			steps++;
-			
+
+			System.out.println("Current: " + current.getId());	
+			path.add(current);
 			openSet.remove(current);
 			closedSet.add(current);
 			
