@@ -41,4 +41,13 @@ public class Vertex {
     public long getId() {
 		return id;
 	}
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj instanceof Vertex) {
+    		Vertex other = (Vertex) obj;
+    		return id == other.id;
+    	}
+    	return super.equals(obj);
+    }
 }

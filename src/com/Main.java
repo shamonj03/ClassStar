@@ -18,6 +18,7 @@ import com.model.Vertex;
 import com.model.Way;
 import com.world.AbstractPathFindingAlgorithm;
 import com.world.BasicAstarPathFindingAlgorithm;
+import com.world.GreedyPathFindingAlgoirthm;
 import com.world.HaversineHeuristic;
 
 public class Main {
@@ -45,6 +46,7 @@ public class Main {
 		/*
 		 * Init map data.
 		 */
+		// Nodes Edges
 		graph = gson.fromJson(new FileReader("./graph.json"), Vertex[].class);
 
 		Way[] ways = gson.fromJson(new FileReader("./ways.raw"), Way[].class);
@@ -92,13 +94,13 @@ public class Main {
 		/*
 		 * Find and raw the path.
 		 */
-		AbstractPathFindingAlgorithm pathing = new BasicAstarPathFindingAlgorithm(new HaversineHeuristic());
+		AbstractPathFindingAlgorithm pathing = new GreedyPathFindingAlgoirthm();// new BasicAstarPathFindingAlgorithm(new HaversineHeuristic());
 		List<Vertex> path = pathing.findPath(vStart, vEnd);
 		
 		Vertex current = path.get(0);
 		for(int i = 1; i < path.size(); i++) {
 			Vertex v = path.get(i);
-			System.out.println(v.getLat() + " " + v.getLon());
+			//System.out.println(v.getLat() + " " + v.getLon());
 			g.drawLine(getXFromLat(current.getLat()), getYFromLon(current.getLon()), getXFromLat(v.getLat()), getYFromLon(v.getLon()));
 			current = v;
 		}
