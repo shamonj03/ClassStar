@@ -63,7 +63,11 @@ public class BasicAstarPathFindingAlgorithm extends AbstractAStarPathFindingAlgo
 				}
 				//System.out.println(neighbor_v.getId());
 				
+<<<<<<< HEAD
 				double tentative_gScore = current.getgScore() + getDistance(start_v, neighbor_v);
+=======
+				double tentative_gScore =  current.getgScore() + getDistance(start_v, neighbor_v);
+>>>>>>> 67920015b356fc00bb8fcb61c43782529cef024c
 				
 				if(tentative_gScore >= neighbor.getgScore()) {
 					continue;
